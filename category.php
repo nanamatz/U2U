@@ -1,4 +1,7 @@
-
+<?php 
+	header('Content-Type: text/html; charset=UTF-8');
+	$message = "";
+?>
 
 <!-- index.html -->
 <!DOCTYPE html>
@@ -19,19 +22,19 @@
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
-        // Ã¹ ¹øÂ° µå·Ó´Ù¿î ¸Þ´º°¡ º¯°æµÇ¾úÀ» ¶§ÀÇ ÀÌº¥Æ® Ã³¸®
+        // ì²« ë²ˆì§¸ ë“œë¡­ë‹¤ìš´ ë©”ë‰´ê°€ ë³€ê²½ë˜ì—ˆì„ ë•Œì˜ ì´ë²¤íŠ¸ ì²˜ë¦¬
         function onChangeFirstDropdown() {
-            // ¼±ÅÃµÈ Ç×¸ñÀÇ °ª °¡Á®¿À±â
+            // ì„ íƒëœ í•­ëª©ì˜ ê°’ ê°€ì ¸ì˜¤ê¸°
             var firstValue = $('#firstDropdown').val();
 
-            // AJAX¸¦ »ç¿ëÇÏ¿© ¼­¹ö·Î µ¥ÀÌÅÍ Àü¼Û
+            // AJAXë¥¼ ì‚¬ìš©í•˜ì—¬ ì„œë²„ë¡œ ë°ì´í„° ì „ì†¡
             $.ajax({
-                url: 'get_second_dropdown.php', // µÎ ¹øÂ° µå·Ó´Ù¿î Ç×¸ñÀ» µ¿ÀûÀ¸·Î »ý¼ºÇÏ´Â PHP ÆÄÀÏ °æ·Î
+                url: 'get_second_dropdown.php', // ë‘ ë²ˆì§¸ ë“œë¡­ë‹¤ìš´ í•­ëª©ì„ ë™ì ìœ¼ë¡œ ìƒì„±í•˜ëŠ” PHP íŒŒì¼ ê²½ë¡œ
                 type: 'POST',
                 data: {firstValue: firstValue},
                 success: function(response) 
                 {
-                    // ¼­¹ö·ÎºÎÅÍ ¹ÞÀº µ¥ÀÌÅÍ·Î µÎ ¹øÂ° µå·Ó´Ù¿î ¸Þ´º °»½Å
+                    // ì„œë²„ë¡œë¶€í„° ë°›ì€ ë°ì´í„°ë¡œ ë‘ ë²ˆì§¸ ë“œë¡­ë‹¤ìš´ ë©”ë‰´ ê°±ì‹ 
                     $('#secondDropdown').html(response);
                 }
             });
@@ -39,47 +42,50 @@
     </script>
 </head>
 <body>
-<div class="container">
-    <a href="test.php">
+    <a href="category.php">
         <img src="/image/u2u.png" alt="Image" width="250" height="150">
     </a>
     <h1>U2U Game Select</h1>
-    <select id="firstDropdown" onchange="onChangeFirstDropdown()">
+
+    <form method="post" action="posts.php">
+        <select id="firstDropdown" onchange="onChangeFirstDropdown()">
+        <option value=""><ê²Œìž„ì„ íƒ></option>
         <?php
         include("./SQLconstants.php");
         $conn = new mysqli($mySQL_host,$mySQL_id,$mySQL_password,$mySQL_database);
 
-            // ¿¬°á È®ÀÎ
+            // ì—°ê²° í™•ì¸
             if ($conn->connect_error) 
             {
-                die("µ¥ÀÌÅÍº£ÀÌ½º ¿¬°á ½ÇÆÐ: " . $conn->connect_error);
+                die("ë°ì´í„°ë² ì´ìŠ¤ ì—°ê²° ì‹¤íŒ¨: " . $conn->connect_error);
             }
 
-            // Äõ¸® ½ÇÇàÇÏ¿© µ¥ÀÌÅÍ °¡Á®¿À±â
+            // ì¿¼ë¦¬ ì‹¤í–‰í•˜ì—¬ ë°ì´í„° ê°€ì ¸ì˜¤ê¸°
             $sql = "SELECT game_id, game_name FROM game";
             $result = $conn->query($sql);
 
-            // µå·Ó´Ù¿î ¿É¼Ç »ý¼º
+            // ë“œë¡­ë‹¤ìš´ ì˜µì…˜ ìƒì„±
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
                     echo "<option value='" . $row['game_id'] . "'>" . $row['game_name'] . "</option>";
                 }
             }
 
-            // µ¥ÀÌÅÍº£ÀÌ½º ¿¬°á ´Ý±â
+            // ë°ì´í„°ë² ì´ìŠ¤ ì—°ê²° ë‹«ê¸°
             $conn->close();
         ?>
 
         <!--<option value="1">Option 1</option>
         <option value="2">Option 2</option>
         <option value="3">Option 3</option>-->
-    </select>
+        </select>
+    
     <select id="secondDropdown">
-        <!-- ÃÊ±â¿¡´Â µÎ ¹øÂ° µå·Ó´Ù¿î ¸Þ´º°¡ ºñ¾îÀÖÀ½ -->
+        <!-- ì´ˆê¸°ì—ëŠ” ë‘ ë²ˆì§¸ ë“œë¡­ë‹¤ìš´ ë©”ë‰´ê°€ ë¹„ì–´ìžˆìŒ -->
     </select>
     <input type="submit" value="Submit">
+    </form>
     </br>
-</div>
 </body>
 </html>
 
