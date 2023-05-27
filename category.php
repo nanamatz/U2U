@@ -39,13 +39,12 @@
     </script>
 </head>
 <body>
-    <a href="category.php">
+<div class="container">
+    <a href="test.php">
         <img src="/image/u2u.png" alt="Image" width="250" height="150">
     </a>
     <h1>U2U Game Select</h1>
-
-    <form method="post" action="posts.php">
-        <select id="firstDropdown" onchange="onChangeFirstDropdown()">
+    <select id="firstDropdown" onchange="onChangeFirstDropdown()">
         <?php
         include("./SQLconstants.php");
         $conn = new mysqli($mySQL_host,$mySQL_id,$mySQL_password,$mySQL_database);
@@ -74,14 +73,13 @@
         <!--<option value="1">Option 1</option>
         <option value="2">Option 2</option>
         <option value="3">Option 3</option>-->
-        </select>
-    
+    </select>
     <select id="secondDropdown">
         <!-- 초기에는 두 번째 드롭다운 메뉴가 비어있음 -->
     </select>
     <input type="submit" value="Submit">
-    </form>
     </br>
+</div>
 </body>
 </html>
 
